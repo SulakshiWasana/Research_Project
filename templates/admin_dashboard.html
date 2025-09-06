@@ -5,6 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - Behavior Monitoring</title>
+
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             box-sizing: border-box;
@@ -297,396 +300,532 @@
             background: #218838;
         }
 
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .main-content {
+            flex: 1;
+        }
+
+        .site-footer {
+            background: #2c3e50;
+            color: #ecf0f1;
+            text-align: center;
+            padding: 15px 0;
+            font-size: 14px;
+            margin-top: auto;
+        }
+
+        .site-footer .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .site-footer .footer-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .site-footer .footer-left {
+            text-align: left;
+        }
+
+        .site-footer .footer-center {
+            text-align: center;
+        }
+
+        .site-footer .footer-right {
+            text-align: right;
+        }
+
+        .site-footer p {
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        .site-footer .footer-links {
+            display: flex;
+            gap: 20px;
+            margin-top: 5px;
+        }
+
+        .site-footer .footer-links a {
+            color: #bdc3c7;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-size: 12px;
+        }
+
+        .site-footer .footer-links a:hover {
+            color: #3498db;
+        }
+
+        .site-footer .copyright {
+            font-size: 11px;
+            color: #95a5a6;
+            margin-top: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .site-footer .footer-row {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .site-footer .footer-left,
+            .site-footer .footer-right {
+                text-align: center;
+            }
+
+            .site-footer {
+                padding: 10px 0;
+            }
+        }
     </style>
 </head>
 
 <body>
-    <div class="header">
-        <h1>Admin Dashboard - Behavior Monitoring</h1>
-        <a href="/logout" class="logout-btn">Logout</a>
-    </div>
-
-    <div class="container">
-        <div class="admin-panel">
-            <h2>Database Overview</h2>
-            
-            <!-- Tabs -->
-            <div class="tabs">
-                <button class="tab active" onclick="showTab('overview')">📊 Overview</button>
-                <button class="tab" onclick="showTab('users')">👥 Users</button>
-                <button class="tab" onclick="showTab('exams')">📚 Exams</button>
-                <button class="tab" onclick="showTab('sessions')">🎯 Sessions</button>
-                <button class="tab" onclick="showTab('detections')">🔍 Detections</button>
-            </div>
-
-            <!-- Overview Tab -->
-            <div id="overview" class="tab-content active">
-                <button class="refresh-btn" onclick="refreshData()">🔄 Refresh Data</button>
-                
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <h3>Total Users</h3>
-                        <div class="number" id="total-users">3</div>
-                        <div class="label">Active Users</div>
-                    </div>
-                    <div class="stat-card">
-                        <h3>Total Exams</h3>
-                        <div class="number" id="total-exams">1</div>
-                        <div class="label">Created Exams</div>
-                    </div>
-                    <div class="stat-card">
-                        <h3>Active Sessions</h3>
-                        <div class="number" id="active-sessions">1</div>
-                        <div class="label">Running Sessions</div>
-                    </div>
-                    <div class="stat-card">
-                        <h3>Total Detections</h3>
-                        <div class="number" id="total-detections">590</div>
-                        <div class="label">Behavior Alerts</div>
-                    </div>
-                </div>
-
-                <h3>Student Monitoring Overview</h3>
-                <div class="students-grid">
-                    <div class="student-card">
-                        <h3>John Doe (student1)
-                            <span class="alert-badge alert-high">590 alerts</span>
-                        </h3>
-                        <p>Username: student1</p>
-                        <div class="behavior-counts">
-                            <div class="behavior-count">
-                                <h4>Looking Away</h4>
-                                <div class="count">90</div>
-                            </div>
-                            <div class="behavior-count">
-                                <h4>Multiple People</h4>
-                                <div class="count">157</div>
-                            </div>
-                            <div class="behavior-count">
-                                <h4>No Face / Sleeping</h4>
-                                <div class="count">110</div>
-                            </div>
-                            <div class="behavior-count">
-                                <h4>Screen Blur</h4>
-                                <div class="count">158</div>
-                            </div>
-                            <div class="behavior-count">
-                                <h4>Tab Switching</h4>
-                                <div class="count">75</div>
-                            </div>
-                            <div class="behavior-count">
-                                <h4>Total Alerts</h4>
-                                <div class="count">590</div>
-                            </div>
-                        </div>
-                        <p class="last-updated">Last alert: 2025-09-06 14:00:08</p>
-                        <a href="/student_history/student1" class="view-history-btn">View Detailed History</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Users Tab -->
-            <div id="users" class="tab-content">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                    <h3>Users Management</h3>
-                    <a href="/admin/users/add" class="btn btn-primary" style="background: #28a745; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">➕ Add New User</a>
-                </div>
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>Username</th>
-                            <th>Name</th>
-                            <th>Role</th>
-                            <th>Password</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for username, user in users.items() %}
-                        <tr>
-                            <td>{{ username }}</td>
-                            <td>{{ user.name }}</td>
-                            <td>
-                                <span class="badge" style="background: {% if user.role == 'admin' %}#dc3545{% else %}#007bff{% endif %}; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px;">
-                                    {{ user.role }}
-                                </span>
-                            </td>
-                            <td>{{ user.password }}</td>
-                            <td>
-                                <a href="/admin/users/edit/{{ username }}" class="btn btn-sm btn-warning" style="background: #ffc107; color: #212529; padding: 5px 10px; text-decoration: none; border-radius: 3px; margin-right: 5px; font-size: 12px;">✏️ Edit</a>
-                                {% if username != 'admin' %}
-                                <button onclick="deleteUser('{{ username }}')" class="btn btn-sm btn-danger" style="background: #dc3545; color: white; padding: 5px 10px; border: none; border-radius: 3px; font-size: 12px; cursor: pointer;">🗑️ Delete</button>
-                                {% endif %}
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- Exams Tab -->
-            <div id="exams" class="tab-content">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                    <h3>Exams Management</h3>
-                    <a href="/admin/create_exam" class="btn btn-primary" style="background: #28a745; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">➕ Create New Exam</a>
-                </div>
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>Exam ID</th>
-                            <th>Title</th>
-                            <th>Description</th>
-                            <th>Duration (min)</th>
-                            <th>Status</th>
-                            <th>Created By</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for exam_id, exam in exams_data.items() %}
-                        <tr>
-                            <td>{{ exam_id }}</td>
-                            <td>{{ exam.title }}</td>
-                            <td>{{ exam.description }}</td>
-                            <td>{{ exam.duration_minutes }}</td>
-                            <td>
-                                <span class="badge" style="background: {% if exam.status == 'active' %}#28a745{% elif exam.status == 'draft' %}#ffc107{% else %}#6c757d{% endif %}; color: {% if exam.status == 'draft' %}#212529{% else %}white{% endif %}; padding: 4px 8px; border-radius: 4px; font-size: 12px;">
-                                    {{ exam.status }}
-                                </span>
-                            </td>
-                            <td>{{ exam.created_by }}</td>
-                            <td>
-                                <a href="/admin/exams/edit/{{ exam_id }}" class="btn btn-sm btn-warning" style="background: #ffc107; color: #212529; padding: 5px 10px; text-decoration: none; border-radius: 3px; margin-right: 5px; font-size: 12px;">✏️ Edit</a>
-                                {% if exam.status == 'active' %}
-                                <button onclick="unscheduleExam('{{ exam_id }}')" class="btn btn-sm btn-secondary" style="background: #6c757d; color: white; padding: 5px 10px; border: none; border-radius: 3px; font-size: 12px; cursor: pointer; margin-right: 5px;">⏸️ Unschedule</button>
-                                {% else %}
-                                <button onclick="scheduleExam('{{ exam_id }}')" class="btn btn-sm btn-success" style="background: #28a745; color: white; padding: 5px 10px; border: none; border-radius: 3px; font-size: 12px; cursor: pointer; margin-right: 5px;">📅 Schedule</button>
-                                {% endif %}
-                                <button onclick="deleteExam('{{ exam_id }}')" class="btn btn-sm btn-danger" style="background: #dc3545; color: white; padding: 5px 10px; border: none; border-radius: 3px; font-size: 12px; cursor: pointer;">🗑️ Delete</button>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-
-            </div>
-
-            <!-- Sessions Tab -->
-            <div id="sessions" class="tab-content">
-                <h3>Exam Sessions Table</h3>
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>Session ID</th>
-                            <th>Exam ID</th>
-                            <th>Status</th>
-                            <th>Students Count</th>
-                            <th>Started At</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>session_1757138424</td>
-                            <td>exam_1757138388</td>
-                            <td>active</td>
-                            <td>1</td>
-                            <td>2025-09-06T11:30:24</td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <h3>Session Details</h3>
-                <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin-top: 20px;">
-                    <h4>Session: session_1757138424</h4>
-                    <p><strong>Status:</strong> active</p>
-                    <p><strong>Started:</strong> 2025-09-06T11:30:24.045853</p>
-                    <p><strong>Students:</strong> student1</p>
-                    <p><strong>Student Answers:</strong></p>
-                    <ul style="margin-left: 20px;">
-                        <li>student1: {'q1': 'A', 'q2': 'C'}</li>
-                    </ul>
-                    <p><strong>Detections:</strong></p>
-                    <ul style="margin-left: 20px;">
-                        <li>student1: 204 detections</li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- Detections Tab -->
-            <div id="detections" class="tab-content">
-                <h3>Detection Data Table</h3>
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>Username</th>
-                            <th>Looking Away</th>
-                            <th>Multiple People</th>
-                            <th>No Face</th>
-                            <th>Blur Screen</th>
-                            <th>Tab Switching</th>
-                            <th>Total Alerts</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>student1</td>
-                            <td>90</td>
-                            <td>157</td>
-                            <td>110</td>
-                            <td>158</td>
-                            <td>75</td>
-                            <td>590</td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <h3>Alert History</h3>
-                <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin-top: 20px;">
-                    <h4>student1:</h4>
-                    <ul style="margin-left: 20px;">
-                        <li>2025-09-06T13:45:37 - tab_switching: Tab switching detected!</li>
-                        <li>2025-09-06T13:58:41 - blur_screen: Screen blur detected!</li>
-                        <li>2025-09-06T13:58:50 - blur_screen: Screen blur detected!</li>
-                        <li>2025-09-06T13:58:52 - looking_away: Looking away from screen detected!</li>
-                        <li>2025-09-06T13:59:02 - looking_away: Looking away from screen detected!</li>
-                        <li>2025-09-06T13:59:06 - looking_away: Looking away from screen detected!</li>
-                        <li>2025-09-06T13:59:12 - no_face: No face detected!</li>
-                        <li>2025-09-06T13:59:56 - no_face: No face detected!</li>
-                        <li>2025-09-06T14:00:01 - tab_switching: Tab switching detected!</li>
-                        <li>2025-09-06T14:00:08 - tab_switching: Tab switching detected!</li>
-                    </ul>
-                </div>
-            </div>
-
-
+    <div class="main-content">
+        <div class="header">
+            <h1>Admin Dashboard - Behavior Monitoring</h1>
+            <a href="/logout" class="logout-btn">Logout</a>
         </div>
+
+        <div class="container">
+            <div class="admin-panel">
+                <h2>Database Overview</h2>
+
+                <!-- Tabs -->
+                <div class="tabs">
+                    <button class="tab active" onclick="showTab('overview')">📊 Overview</button>
+                    <button class="tab" onclick="showTab('users')">👥 Users</button>
+                    <button class="tab" onclick="showTab('exams')">📚 Exams</button>
+                    <button class="tab" onclick="showTab('sessions')">🎯 Sessions</button>
+                    <button class="tab" onclick="showTab('detections')">🔍 Detections</button>
+                </div>
+
+                <!-- Overview Tab -->
+                <div id="overview" class="tab-content active">
+                    <button class="refresh-btn" onclick="refreshData()">🔄 Refresh Data</button>
+
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <h3>Total Users</h3>
+                            <div class="number" id="total-users">3</div>
+                            <div class="label">Active Users</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Total Exams</h3>
+                            <div class="number" id="total-exams">1</div>
+                            <div class="label">Created Exams</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Active Sessions</h3>
+                            <div class="number" id="active-sessions">1</div>
+                            <div class="label">Running Sessions</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Total Detections</h3>
+                            <div class="number" id="total-detections">590</div>
+                            <div class="label">Behavior Alerts</div>
+                        </div>
+                    </div>
+
+                    <h3>Student Monitoring Overview</h3>
+                    <div class="students-grid">
+                        <div class="student-card">
+                            <h3>John Doe (student1)
+                                <span class="alert-badge alert-high">590 alerts</span>
+                            </h3>
+                            <p>Username: student1</p>
+                            <div class="behavior-counts">
+                                <div class="behavior-count">
+                                    <h4>Looking Away</h4>
+                                    <div class="count">90</div>
+                                </div>
+                                <div class="behavior-count">
+                                    <h4>Multiple People</h4>
+                                    <div class="count">157</div>
+                                </div>
+                                <div class="behavior-count">
+                                    <h4>No Face / Sleeping</h4>
+                                    <div class="count">110</div>
+                                </div>
+                                <div class="behavior-count">
+                                    <h4>Screen Blur</h4>
+                                    <div class="count">158</div>
+                                </div>
+                                <div class="behavior-count">
+                                    <h4>Tab Switching</h4>
+                                    <div class="count">75</div>
+                                </div>
+                                <div class="behavior-count">
+                                    <h4>Total Alerts</h4>
+                                    <div class="count">590</div>
+                                </div>
+                            </div>
+                            <p class="last-updated">Last alert: 2025-09-06 14:00:08</p>
+                            <a href="/student_history/student1" class="view-history-btn">View Detailed History</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Users Tab -->
+                <div id="users" class="tab-content">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <h3>Users Management</h3>
+                        <a href="/admin/users/add" class="btn btn-primary"
+                            style="background: #28a745; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">➕
+                            Add New User</a>
+                    </div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Username</th>
+                                <th>Name</th>
+                                <th>Role</th>
+                                <th>Password</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for username, user in users.items() %}
+                            <tr>
+                                <td>{{ username }}</td>
+                                <td>{{ user.name }}</td>
+                                <td>
+                                    <span class="badge"
+                                        style="background: {% if user.role == 'admin' %}#dc3545{% else %}#007bff{% endif %}; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px;">
+                                        {{ user.role }}
+                                    </span>
+                                </td>
+                                <td>{{ user.password }}</td>
+                                <td>
+                                    <a href="/admin/users/edit/{{ username }}" class="btn btn-sm btn-warning"
+                                        style="background: #ffc107; color: #212529; padding: 5px 10px; text-decoration: none; border-radius: 3px; margin-right: 5px; font-size: 12px;">✏️
+                                        Edit</a>
+                                    {% if username != 'admin' %}
+                                    <button onclick="deleteUser('{{ username }}')" class="btn btn-sm btn-danger"
+                                        style="background: #dc3545; color: white; padding: 5px 10px; border: none; border-radius: 3px; font-size: 12px; cursor: pointer;">🗑️
+                                        Delete</button>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Exams Tab -->
+                <div id="exams" class="tab-content">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <h3>Exams Management</h3>
+                        <a href="/admin/create_exam" class="btn btn-primary"
+                            style="background: #28a745; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">➕
+                            Create New Exam</a>
+                    </div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Exam ID</th>
+                                <th>Title</th>
+                                <th>Description</th>
+                                <th>Duration (min)</th>
+                                <th>Status</th>
+                                <th>Created By</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for exam_id, exam in exams_data.items() %}
+                            <tr>
+                                <td>{{ exam_id }}</td>
+                                <td>{{ exam.title }}</td>
+                                <td>{{ exam.description }}</td>
+                                <td>{{ exam.duration_minutes }}</td>
+                                <td>
+                                    <span class="badge"
+                                        style="background: {% if exam.status == 'active' %}#28a745{% elif exam.status == 'draft' %}#ffc107{% else %}#6c757d{% endif %}; color: {% if exam.status == 'draft' %}#212529{% else %}white{% endif %}; padding: 4px 8px; border-radius: 4px; font-size: 12px;">
+                                        {{ exam.status }}
+                                    </span>
+                                </td>
+                                <td>{{ exam.created_by }}</td>
+                                <td>
+                                    <a href="/admin/exams/edit/{{ exam_id }}" class="btn btn-sm btn-warning"
+                                        style="background: #ffc107; color: #212529; padding: 5px 10px; text-decoration: none; border-radius: 3px; margin-right: 5px; font-size: 12px;">✏️
+                                        Edit</a>
+                                    {% if exam.status == 'active' %}
+                                    <button onclick="unscheduleExam('{{ exam_id }}')" class="btn btn-sm btn-secondary"
+                                        style="background: #6c757d; color: white; padding: 5px 10px; border: none; border-radius: 3px; font-size: 12px; cursor: pointer; margin-right: 5px;">⏸️
+                                        Unschedule</button>
+                                    {% else %}
+                                    <button onclick="scheduleExam('{{ exam_id }}')" class="btn btn-sm btn-success"
+                                        style="background: #28a745; color: white; padding: 5px 10px; border: none; border-radius: 3px; font-size: 12px; cursor: pointer; margin-right: 5px;">📅
+                                        Schedule</button>
+                                    {% endif %}
+                                    <button onclick="deleteExam('{{ exam_id }}')" class="btn btn-sm btn-danger"
+                                        style="background: #dc3545; color: white; padding: 5px 10px; border: none; border-radius: 3px; font-size: 12px; cursor: pointer;">🗑️
+                                        Delete</button>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+
+                </div>
+
+                <!-- Sessions Tab -->
+                <div id="sessions" class="tab-content">
+                    <h3>Exam Sessions Table</h3>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Session ID</th>
+                                <th>Exam ID</th>
+                                <th>Status</th>
+                                <th>Students Count</th>
+                                <th>Started At</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>session_1757138424</td>
+                                <td>exam_1757138388</td>
+                                <td>active</td>
+                                <td>1</td>
+                                <td>2025-09-06T11:30:24</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h3>Session Details</h3>
+                    <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin-top: 20px;">
+                        <h4>Session: session_1757138424</h4>
+                        <p><strong>Status:</strong> active</p>
+                        <p><strong>Started:</strong> 2025-09-06T11:30:24.045853</p>
+                        <p><strong>Students:</strong> student1</p>
+                        <p><strong>Student Answers:</strong></p>
+                        <ul style="margin-left: 20px;">
+                            <li>student1: {'q1': 'A', 'q2': 'C'}</li>
+                        </ul>
+                        <p><strong>Detections:</strong></p>
+                        <ul style="margin-left: 20px;">
+                            <li>student1: 204 detections</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Detections Tab -->
+                <div id="detections" class="tab-content">
+                    <h3>Detection Data Table</h3>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Username</th>
+                                <th>Looking Away</th>
+                                <th>Multiple People</th>
+                                <th>No Face</th>
+                                <th>Blur Screen</th>
+                                <th>Tab Switching</th>
+                                <th>Total Alerts</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>student1</td>
+                                <td>90</td>
+                                <td>157</td>
+                                <td>110</td>
+                                <td>158</td>
+                                <td>75</td>
+                                <td>590</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h3>Alert History</h3>
+                    <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin-top: 20px;">
+                        <h4>student1:</h4>
+                        <ul style="margin-left: 20px;">
+                            <li>2025-09-06T13:45:37 - tab_switching: Tab switching detected!</li>
+                            <li>2025-09-06T13:58:41 - blur_screen: Screen blur detected!</li>
+                            <li>2025-09-06T13:58:50 - blur_screen: Screen blur detected!</li>
+                            <li>2025-09-06T13:58:52 - looking_away: Looking away from screen detected!</li>
+                            <li>2025-09-06T13:59:02 - looking_away: Looking away from screen detected!</li>
+                            <li>2025-09-06T13:59:06 - looking_away: Looking away from screen detected!</li>
+                            <li>2025-09-06T13:59:12 - no_face: No face detected!</li>
+                            <li>2025-09-06T13:59:56 - no_face: No face detected!</li>
+                            <li>2025-09-06T14:00:01 - tab_switching: Tab switching detected!</li>
+                            <li>2025-09-06T14:00:08 - tab_switching: Tab switching detected!</li>
+                        </ul>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+        <script>
+            function showTab(tabName) {
+                // Hide all tab contents
+                const tabContents = document.querySelectorAll('.tab-content');
+                tabContents.forEach(content => content.classList.remove('active'));
+
+                // Remove active class from all tabs
+                const tabs = document.querySelectorAll('.tab');
+                tabs.forEach(tab => tab.classList.remove('active'));
+
+                // Show selected tab content
+                document.getElementById(tabName).classList.add('active');
+
+                // Add active class to clicked tab
+                event.target.classList.add('active');
+            }
+
+            function refreshData() {
+                // Simulate data refresh
+                const refreshBtn = document.querySelector('.refresh-btn');
+                refreshBtn.textContent = '🔄 Refreshing...';
+                refreshBtn.disabled = true;
+
+                setTimeout(() => {
+                    refreshBtn.textContent = '🔄 Refresh Data';
+                    refreshBtn.disabled = false;
+                    alert('Data refreshed successfully!');
+                }, 1000);
+            }
+
+            // User management functions
+            function deleteUser(username) {
+                if (confirm(`Are you sure you want to delete user "${username}"?`)) {
+                    fetch(`/admin/users/delete/${username}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        }
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                alert('User deleted successfully!');
+                                location.reload();
+                            } else {
+                                alert('Error: ' + data.error);
+                            }
+                        })
+                        .catch(error => {
+                            alert('Error deleting user: ' + error);
+                        });
+                }
+            }
+
+            // Exam management functions
+            function deleteExam(examId) {
+                if (confirm(`Are you sure you want to delete exam "${examId}"?`)) {
+                    fetch(`/admin/exams/delete/${examId}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        }
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                alert('Exam deleted successfully!');
+                                location.reload();
+                            } else {
+                                alert('Error: ' + data.error);
+                            }
+                        })
+                        .catch(error => {
+                            alert('Error deleting exam: ' + error);
+                        });
+                }
+            }
+
+            function scheduleExam(examId) {
+                if (confirm(`Are you sure you want to schedule exam "${examId}"?`)) {
+                    fetch(`/admin/exams/schedule/${examId}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        }
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                alert('Exam scheduled successfully!');
+                                location.reload();
+                            } else {
+                                alert('Error: ' + data.error);
+                            }
+                        })
+                        .catch(error => {
+                            alert('Error scheduling exam: ' + error);
+                        });
+                }
+            }
+
+            function unscheduleExam(examId) {
+                if (confirm(`Are you sure you want to unschedule exam "${examId}"?`)) {
+                    fetch(`/admin/exams/unschedule/${examId}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        }
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                alert('Exam unscheduled successfully!');
+                                location.reload();
+                            } else {
+                                alert('Error: ' + data.error);
+                            }
+                        })
+                        .catch(error => {
+                            alert('Error unscheduling exam: ' + error);
+                        });
+                }
+            }
+
+        </script>
     </div>
 
-    <script>
-        function showTab(tabName) {
-            // Hide all tab contents
-            const tabContents = document.querySelectorAll('.tab-content');
-            tabContents.forEach(content => content.classList.remove('active'));
-            
-            // Remove active class from all tabs
-            const tabs = document.querySelectorAll('.tab');
-            tabs.forEach(tab => tab.classList.remove('active'));
-            
-            // Show selected tab content
-            document.getElementById(tabName).classList.add('active');
-            
-            // Add active class to clicked tab
-            event.target.classList.add('active');
-        }
-
-        function refreshData() {
-            // Simulate data refresh
-            const refreshBtn = document.querySelector('.refresh-btn');
-            refreshBtn.textContent = '🔄 Refreshing...';
-            refreshBtn.disabled = true;
-            
-            setTimeout(() => {
-                refreshBtn.textContent = '🔄 Refresh Data';
-                refreshBtn.disabled = false;
-                alert('Data refreshed successfully!');
-            }, 1000);
-        }
-
-        // User management functions
-        function deleteUser(username) {
-            if (confirm(`Are you sure you want to delete user "${username}"?`)) {
-                fetch(`/admin/users/delete/${username}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        alert('User deleted successfully!');
-                        location.reload();
-                    } else {
-                        alert('Error: ' + data.error);
-                    }
-                })
-                .catch(error => {
-                    alert('Error deleting user: ' + error);
-                });
-            }
-        }
-
-        // Exam management functions
-        function deleteExam(examId) {
-            if (confirm(`Are you sure you want to delete exam "${examId}"?`)) {
-                fetch(`/admin/exams/delete/${examId}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        alert('Exam deleted successfully!');
-                        location.reload();
-                    } else {
-                        alert('Error: ' + data.error);
-                    }
-                })
-                .catch(error => {
-                    alert('Error deleting exam: ' + error);
-                });
-            }
-        }
-
-        function scheduleExam(examId) {
-            if (confirm(`Are you sure you want to schedule exam "${examId}"?`)) {
-                fetch(`/admin/exams/schedule/${examId}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        alert('Exam scheduled successfully!');
-                        location.reload();
-                    } else {
-                        alert('Error: ' + data.error);
-                    }
-                })
-                .catch(error => {
-                    alert('Error scheduling exam: ' + error);
-                });
-            }
-        }
-
-        function unscheduleExam(examId) {
-            if (confirm(`Are you sure you want to unschedule exam "${examId}"?`)) {
-                fetch(`/admin/exams/unschedule/${examId}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        alert('Exam unscheduled successfully!');
-                        location.reload();
-                    } else {
-                        alert('Error: ' + data.error);
-                    }
-                })
-                .catch(error => {
-                    alert('Error unscheduling exam: ' + error);
-                });
-            }
-        }
-
-    </script>
+    <!-- Site-wide Footer -->
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-row">
+                <div class="footer-left">
+                    <p><strong>Exam Monitoring System</strong></p>
+                    <p>Secure Online Examination Platform</p>
+                </div>
+                <div class="footer-center">
+                    <div class="footer-links">
+                        <a href="#"><i class="fas fa-shield-alt"></i> Security</a>
+                        <a href="#"><i class="fas fa-question-circle"></i> Help</a>
+                        <a href="#"><i class="fas fa-envelope"></i> Contact</a>
+                    </div>
+                </div>
+                <div class="footer-right">
+                    <p><i class="fas fa-lock"></i> Secure & Monitored</p>
+                    <p><i class="fas fa-clock"></i> Real-time Proctoring</p>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2024 Exam Monitoring System. All rights reserved. | Privacy Policy | Terms of Service</p>
+            </div>
+        </div>
+    </footer>
 </body>
 
 </html>

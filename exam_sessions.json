@@ -881,6 +881,38 @@
         {
           "type": "looking_away",
           "timestamp": "2025-09-06T19:27:04.624102"
+        },
+        {
+          "type": "looking_away",
+          "timestamp": "2025-09-06T20:22:45.250916"
+        },
+        {
+          "type": "no_face",
+          "timestamp": "2025-09-06T20:22:51.070409"
+        },
+        {
+          "type": "looking_away",
+          "timestamp": "2025-09-06T20:26:02.977305"
+        },
+        {
+          "type": "looking_away",
+          "timestamp": "2025-09-06T20:26:06.964397"
+        },
+        {
+          "type": "no_face",
+          "timestamp": "2025-09-06T20:26:12.969829"
+        },
+        {
+          "type": "tab_switching",
+          "timestamp": "2025-09-06T20:26:57.682663"
+        },
+        {
+          "type": "looking_away",
+          "timestamp": "2025-09-06T20:27:04.996956"
+        },
+        {
+          "type": "no_face",
+          "timestamp": "2025-09-06T20:27:10.965982"
         }
       ],
       "Sulakshi": [
