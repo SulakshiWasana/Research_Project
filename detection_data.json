@@ -1,0 +1,90 @@
+{
+  "Sulakshi": {
+    "looking_away": 2,
+    "multiple_people": 0,
+    "no_face": 1,
+    "blur_screen": 0,
+    "tab_switching": 1,
+    "alert_history": [
+      {
+        "timestamp": "2025-09-06T16:32:09.176443",
+        "type": "looking_away",
+        "message": "Looking away from screen detected!"
+      },
+      {
+        "timestamp": "2025-09-06T16:32:14.653062",
+        "type": "no_face",
+        "message": "No face detected!"
+      },
+      {
+        "timestamp": "2025-09-06T16:32:22.080622",
+        "type": "tab_switching",
+        "message": "Tab switching detected!"
+      }
+    ]
+  },
+  "student1": {
+    "looking_away": 9,
+    "multiple_people": 0,
+    "no_face": 1,
+    "blur_screen": 0,
+    "tab_switching": 3,
+    "alert_history": [
+      {
+        "timestamp": "2025-09-06T17:18:31.673351",
+        "type": "looking_away",
+        "message": "Looking away from screen detected!"
+      },
+      {
+        "timestamp": "2025-09-06T17:18:35.739279",
+        "type": "tab_switching",
+        "message": "Tab switching detected!"
+      },
+      {
+        "timestamp": "2025-09-06T17:33:23.885940",
+        "type": "looking_away",
+        "message": "Looking away from screen detected!"
+      },
+      {
+        "timestamp": "2025-09-06T17:33:28.077270",
+        "type": "looking_away",
+        "message": "Looking away from screen detected!"
+      },
+      {
+        "timestamp": "2025-09-06T17:33:32.392291",
+        "type": "tab_switching",
+        "message": "Tab switching detected!"
+      },
+      {
+        "timestamp": "2025-09-06T17:37:27.278581",
+        "type": "looking_away",
+        "message": "Looking away from screen detected!"
+      },
+      {
+        "timestamp": "2025-09-06T17:37:30.838197",
+        "type": "no_face",
+        "message": "No face detected!"
+      },
+      {
+        "timestamp": "2025-09-06T17:37:32.867948",
+        "type": "looking_away",
+        "message": "Looking away from screen detected!"
+      },
+      {
+        "timestamp": "2025-09-06T17:37:38.879970",
+        "type": "looking_away",
+        "message": "Looking away from screen detected!"
+      },
+      {
+        "timestamp": "2025-09-06T17:37:42.891094",
+        "type": "looking_away",
+        "message": "Looking away from screen detected!"
+      },
+      {
+        "timestamp": "2025-09-06T17:38:01.896222",
+        "type": "tab_switching",
+        "message": "Tab switching detected!"
+      }
+    ]
+  }
+}

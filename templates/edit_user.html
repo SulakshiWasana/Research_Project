@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit User - Admin Panel</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, .1);
+        }
+
+        .header h1 {
+            font-weight: 600;
+            font-size: 24px;
+        }
+
+        .back-btn {
+            background: rgba(255, 255, 255, .2);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, .3);
+            padding: 8px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .form-card {
+            background: #fff;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, .05);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
+        }
+
+        .btn {
+            background: #667eea;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: background 0.3s;
+            margin-right: 10px;
+        }
+
+        .btn:hover {
+            background: #5a6fd5;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .alert {
+            padding: 12px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .password-note {
+            font-size: 14px;
+            color: #6c757d;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Edit User: {{ username }}</h1>
+        <a href="/admin" class="back-btn">← Back to Dashboard</a>
+    </div>
+
+    <div class="container">
+        <div class="form-card">
+            <div id="alert" class="alert"></div>
+            
+            <form id="editUserForm">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" value="{{ username }}" readonly style="background: #f8f9fa;">
+                </div>
+
+                <div class="form-group">
+                    <label for="name">Full Name *</label>
+                    <input type="text" id="name" name="name" value="{{ user.name }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Leave blank to keep current password">
+                    <div class="password-note">Leave blank to keep the current password</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="role">Role *</label>
+                    <select id="role" name="role" required>
+                        <option value="student" {% if user.role == 'student' %}selected{% endif %}>Student</option>
+                        <option value="admin" {% if user.role == 'admin' %}selected{% endif %}>Admin</option>
+                    </select>
+                </div>
+
+                <div style="margin-top: 30px;">
+                    <button type="submit" class="btn">💾 Update User</button>
+                    <a href="/admin" class="btn btn-secondary" style="text-decoration: none; display: inline-block;">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('editUserForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                name: document.getElementById('name').value,
+                password: document.getElementById('password').value,
+                role: document.getElementById('role').value
+            };
+
+            fetch('/admin/users/edit/{{ username }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                const alert = document.getElementById('alert');
+                if (data.success) {
+                    alert.className = 'alert alert-success';
+                    alert.textContent = data.message;
+                    alert.style.display = 'block';
+                    
+                    // Redirect after 2 seconds
+                    setTimeout(() => {
+                        window.location.href = '/admin';
+                    }, 2000);
+                } else {
+                    alert.className = 'alert alert-error';
+                    alert.textContent = 'Error: ' + data.error;
+                    alert.style.display = 'block';
+                }
+            })
+            .catch(error => {
+                const alert = document.getElementById('alert');
+                alert.className = 'alert alert-error';
+                alert.textContent = 'Error: ' + error.message;
+                alert.style.display = 'block';
+            });
+        });
+    </script>
+</body>
+</html>

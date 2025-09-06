@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Exam - Admin Dashboard</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+
+        input:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .question-section {
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            background: #f8f9fa;
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .option-group {
+            margin: 10px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .option-input {
+            flex: 1;
+            margin: 0;
+        }
+
+        .correct-checkbox {
+            width: auto;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: flex-end;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #e9ecef;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>➕ Create New Exam</h1>
+            <p>Set up a new monitored examination</p>
+        </div>
+
+        <div class="content">
+            <a href="/admin/exams" class="back-link">← Back to Exam Management</a>
+
+            <form id="examForm">
+                <div class="form-group">
+                    <label for="title">Exam Title</label>
+                    <input type="text" id="title" name="title" required placeholder="e.g., Mathematics Midterm Exam">
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea id="description" name="description" rows="3"
+                        placeholder="Brief description of the exam content and objectives"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="duration">Duration (minutes)</label>
+                    <input type="number" id="duration" name="duration" min="5" max="300" value="60" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Questions</label>
+                    <div id="questionsContainer">
+                        <!-- Questions will be added here dynamically -->
+                    </div>
+                    <button type="button" onclick="addQuestion()" class="btn btn-secondary">+ Add Question</button>
+                </div>
+
+                <div class="form-actions">
+                    <a href="/admin/exams" class="btn btn-secondary">Cancel</a>
+                    <button type="submit" class="btn btn-success">Create Exam</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let questionCount = 0;
+
+        function addQuestion() {
+            questionCount++;
+            const container = document.getElementById('questionsContainer');
+
+            const questionDiv = document.createElement('div');
+            questionDiv.className = 'question-section';
+            questionDiv.innerHTML = `
+                <div class="question-header">
+                    <h4>Question ${questionCount}</h4>
+                    <button type="button" onclick="removeQuestion(this)" class="btn btn-danger" style="padding: 5px 10px; font-size: 0.8rem;">Remove</button>
+                </div>
+                <div class="form-group">
+                    <label>Question Text</label>
+                    <textarea name="question_text_${questionCount}" required placeholder="Enter your question here..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Answer Options</label>
+                    <div class="option-group">
+                        <input type="text" name="option_a_${questionCount}" class="option-input" placeholder="Option A" required>
+                        <input type="radio" name="correct_${questionCount}" value="A" class="correct-checkbox" required>
+                        <label style="margin: 0;">Correct</label>
+                    </div>
+                    <div class="option-group">
+                        <input type="text" name="option_b_${questionCount}" class="option-input" placeholder="Option B" required>
+                        <input type="radio" name="correct_${questionCount}" value="B" class="correct-checkbox">
+                        <label style="margin: 0;">Correct</label>
+                    </div>
+                    <div class="option-group">
+                        <input type="text" name="option_c_${questionCount}" class="option-input" placeholder="Option C" required>
+                        <input type="radio" name="correct_${questionCount}" value="C" class="correct-checkbox">
+                        <label style="margin: 0;">Correct</label>
+                    </div>
+                    <div class="option-group">
+                        <input type="text" name="option_d_${questionCount}" class="option-input" placeholder="Option D" required>
+                        <input type="radio" name="correct_${questionCount}" value="D" class="correct-checkbox">
+                        <label style="margin: 0;">Correct</label>
+                    </div>
+                </div>
+            `;
+
+            container.appendChild(questionDiv);
+        }
+
+        function removeQuestion(button) {
+            button.closest('.question-section').remove();
+        }
+
+        // Add first question by default
+        addQuestion();
+
+        document.getElementById('examForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+            const examData = {
+                title: formData.get('title'),
+                description: formData.get('description'),
+                duration_minutes: parseInt(formData.get('duration')),
+                questions: []
+            };
+
+            // Collect questions
+            for (let i = 1; i <= questionCount; i++) {
+                const questionText = formData.get(`question_text_${i}`);
+                if (questionText) {
+                    const question = {
+                        id: i,
+                        text: questionText,
+                        options: {
+                            A: formData.get(`option_a_${i}`),
+                            B: formData.get(`option_b_${i}`),
+                            C: formData.get(`option_c_${i}`),
+                            D: formData.get(`option_d_${i}`)
+                        },
+                        correct_answer: formData.get(`correct_${i}`)
+                    };
+                    examData.questions.push(question);
+                }
+            }
+
+            if (examData.questions.length === 0) {
+                alert('Please add at least one question.');
+                return;
+            }
+
+            // Submit exam
+            fetch('/admin/create_exam', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(examData)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Exam created successfully!');
+                        window.location.href = '/admin/exams';
+                    } else {
+                        alert('Error creating exam: ' + (data.error || 'Unknown error'));
+                    }
+                })
+                .catch(error => {
+                    alert('Error: ' + error.message);
+                });
+        });
+    </script>
+</body>
+
+</html>

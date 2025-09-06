@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Exams - Admin Dashboard</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .exam-card {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-left: 4px solid #667eea;
+            transition: transform 0.2s;
+        }
+
+        .exam-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .exam-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .exam-meta {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            background: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-draft {
+            background: #ffc107;
+            color: #856404;
+        }
+
+        .status-active {
+            background: #28a745;
+            color: white;
+        }
+
+        .status-completed {
+            background: #6c757d;
+            color: white;
+        }
+
+        .exam-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-info {
+            background: #17a2b8;
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .create-btn {
+            background: linear-gradient(135deg, #56ab2f 0%, #a8e6cf 100%);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 30px;
+            transition: transform 0.2s;
+        }
+
+        .create-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .no-exams {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+
+        .no-exams-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📚 Exam Management</h1>
+            <p>Create, manage, and monitor student exams</p>
+        </div>
+
+        <div class="content">
+            <a href="/admin" class="back-link">← Back to Admin Dashboard</a>
+
+            <a href="/admin/create_exam" class="create-btn">➕ Create New Exam</a>
+
+            {% if exams %}
+            {% for exam_id, exam in exams.items() %}
+            <div class="exam-card">
+                <div class="exam-title">
+                    {{ exam.title }}
+                    <span class="status-badge status-{{ exam.status }}">{{ exam.status }}</span>
+                </div>
+                <p style="color: #666; margin-bottom: 15px;">{{ exam.description }}</p>
+
+                <div class="exam-meta">
+                    <div class="meta-item">⏱️ {{ exam.duration_minutes }} minutes</div>
+                    <div class="meta-item">📝 {{ exam.questions|length }} questions</div>
+                    <div class="meta-item">📅 Created: {{ exam.created_at[:16].replace('T', ' ') }}</div>
+                    <div class="meta-item">👤 By: {{ exam.created_by }}</div>
+                </div>
+
+                <div class="exam-actions">
+                    {% if exam.status == 'draft' %}
+                    <button onclick="startExam('{{ exam_id }}')" class="btn btn-success">🚀 Start Exam</button>
+                    {% elif exam.status == 'active' %}
+                    <button onclick="stopExam('{{ exam_id }}')" class="btn btn-danger">⏹️ Stop Exam</button>
+                    <button onclick="viewResults('{{ exam_id }}')" class="btn btn-info">📊 View Results</button>
+                    {% else %}
+                    <button onclick="viewResults('{{ exam_id }}')" class="btn btn-info">📊 View Results</button>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <div class="no-exams">
+                <div class="no-exams-icon">📭</div>
+                <h2>No Exams Created</h2>
+                <p>Get started by creating your first exam using the button above.</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+        function startExam(examId) {
+            if (confirm('Start this exam? Students will be able to join once started.')) {
+                fetch(`/admin/start_exam/${examId}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert('Exam started successfully!');
+                            location.reload();
+                        } else {
+                            alert('Error starting exam: ' + (data.error || 'Unknown error'));
+                        }
+                    })
+                    .catch(error => {
+                        alert('Error: ' + error.message);
+                    });
+            }
+        }
+
+        function stopExam(examId) {
+            // Find session ID for this exam
+            if (confirm('Stop this exam? No more students will be able to join.')) {
+                // For now, just reload - in a full implementation, we'd track session IDs
+                alert('Exam stopped (implementation needed for session tracking)');
+            }
+        }
+
+        function viewResults(examId) {
+            alert('Results viewer not implemented yet');
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,74 @@
+{
+  "exam_1757138388": {
+    "title": "Mock Exam 1",
+    "description": "This is a Mock Exam",
+    "duration_minutes": 60,
+    "questions": [
+      {
+        "id": "q1",
+        "text": "what is name",
+        "options": {
+          "A": "ss",
+          "B": "dd",
+          "C": "ff",
+          "D": "gg"
+        },
+        "correct_answer": "B"
+      },
+      {
+        "id": "q2",
+        "text": "dsvsdv",
+        "options": {
+          "A": "xcv",
+          "B": "bxc",
+          "C": "xcv",
+          "D": "x "
+        },
+        "correct_answer": "D"
+      }
+    ],
+    "created_at": "2025-09-06T11:29:48.663522",
+    "created_by": "admin",
+    "status": "active",
+    "scheduled_at": "2025-09-06T16:38:15.042596",
+    "scheduled_by": "admin",
+    "updated_at": "2025-09-06T16:37:56.809948",
+    "updated_by": "admin",
+    "unscheduled_at": "2025-09-06T16:38:07.062346",
+    "unscheduled_by": "admin"
+  },
+  "exam_1757156993": {
+    "title": "Mock Exam 2",
+    "description": "This is a Mock Exam",
+    "duration_minutes": 60,
+    "questions": [
+      {
+        "id": 1,
+        "text": "Question 1",
+        "options": {
+          "A": "A",
+          "B": "B",
+          "C": "C",
+          "D": "D"
+        },
+        "correct_answer": "B"
+      },
+      {
+        "id": 2,
+        "text": "Question 2",
+        "options": {
+          "A": "A",
+          "B": "B",
+          "C": "C",
+          "D": "D"
+        },
+        "correct_answer": "D"
+      }
+    ],
+    "created_at": "2025-09-06T16:39:53.943710",
+    "created_by": "admin",
+    "status": "active",
+    "scheduled_at": "2025-09-06T16:40:24.297966",
+    "scheduled_by": "admin"
+  }
+}

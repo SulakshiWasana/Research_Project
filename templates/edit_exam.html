@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Exam - Admin Panel</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, .1);
+        }
+
+        .header h1 {
+            font-weight: 600;
+            font-size: 24px;
+        }
+
+        .back-btn {
+            background: rgba(255, 255, 255, .2);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, .3);
+            padding: 8px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .form-card {
+            background: #fff;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, .05);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .question-group {
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            background: #f8f9fa;
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .question-number {
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .remove-question {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .options-group {
+            margin-top: 10px;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .option input[type="text"] {
+            flex: 1;
+            margin-right: 10px;
+        }
+
+        .option input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        .btn {
+            background: #667eea;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: background 0.3s;
+            margin-right: 10px;
+        }
+
+        .btn:hover {
+            background: #5a6fd5;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .btn-success {
+            background: #28a745;
+        }
+
+        .btn-success:hover {
+            background: #218838;
+        }
+
+        .alert {
+            padding: 12px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Edit Exam: {{ exam.title }}</h1>
+        <a href="/admin" class="back-btn">← Back to Dashboard</a>
+    </div>
+
+    <div class="container">
+        <div class="form-card">
+            <div id="alert" class="alert"></div>
+            
+            <form id="editExamForm">
+                <div class="form-group">
+                    <label for="title">Exam Title *</label>
+                    <input type="text" id="title" name="title" value="{{ exam.title }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Description *</label>
+                    <textarea id="description" name="description" required>{{ exam.description }}</textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="duration_minutes">Duration (minutes) *</label>
+                    <input type="number" id="duration_minutes" name="duration_minutes" value="{{ exam.duration_minutes }}" min="1" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Questions *</label>
+                    <div id="questions-container">
+                        {% for question in exam.questions %}
+                        <div class="question-group" data-question-index="{{ loop.index0 }}">
+                            <div class="question-header">
+                                <span class="question-number">Question {{ loop.index }}</span>
+                                <button type="button" class="remove-question" onclick="removeQuestion(this)">Remove</button>
+                            </div>
+                            <input type="text" name="question_text" placeholder="Enter question text" value="{{ question.text }}" required>
+                            <div class="options-group">
+                                {% for option_key, option_text in question.options.items() %}
+                                <div class="option">
+                                    <input type="radio" name="correct_answer_{{ loop.index0 }}" value="{{ option_key }}" {% if question.correct_answer == option_key %}checked{% endif %}>
+                                    <input type="text" name="option_{{ option_key }}" placeholder="Option {{ option_key }}" value="{{ option_text }}" required>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <button type="button" class="btn btn-success" onclick="addQuestion()">➕ Add Question</button>
+                </div>
+
+                <div style="margin-top: 30px;">
+                    <button type="submit" class="btn">💾 Update Exam</button>
+                    <a href="/admin" class="btn btn-secondary" style="text-decoration: none; display: inline-block;">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let questionIndex = {{ exam.questions|length }};
+
+        function addQuestion() {
+            const container = document.getElementById('questions-container');
+            const questionGroup = document.createElement('div');
+            questionGroup.className = 'question-group';
+            questionGroup.setAttribute('data-question-index', questionIndex);
+            
+            questionGroup.innerHTML = `
+                <div class="question-header">
+                    <span class="question-number">Question ${questionIndex + 1}</span>
+                    <button type="button" class="remove-question" onclick="removeQuestion(this)">Remove</button>
+                </div>
+                <input type="text" name="question_text" placeholder="Enter question text" required>
+                <div class="options-group">
+                    <div class="option">
+                        <input type="radio" name="correct_answer_${questionIndex}" value="A" required>
+                        <input type="text" name="option_A" placeholder="Option A" required>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="correct_answer_${questionIndex}" value="B" required>
+                        <input type="text" name="option_B" placeholder="Option B" required>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="correct_answer_${questionIndex}" value="C" required>
+                        <input type="text" name="option_C" placeholder="Option C" required>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="correct_answer_${questionIndex}" value="D" required>
+                        <input type="text" name="option_D" placeholder="Option D" required>
+                    </div>
+                </div>
+            `;
+            
+            container.appendChild(questionGroup);
+            questionIndex++;
+            updateQuestionNumbers();
+        }
+
+        function removeQuestion(button) {
+            if (document.querySelectorAll('.question-group').length <= 1) {
+                alert('At least one question is required');
+                return;
+            }
+            button.closest('.question-group').remove();
+            updateQuestionNumbers();
+        }
+
+        function updateQuestionNumbers() {
+            const questions = document.querySelectorAll('.question-group');
+            questions.forEach((question, index) => {
+                const numberSpan = question.querySelector('.question-number');
+                numberSpan.textContent = `Question ${index + 1}`;
+            });
+        }
+
+        document.getElementById('editExamForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const questions = [];
+            
+            // Collect questions data
+            const questionGroups = document.querySelectorAll('.question-group');
+            questionGroups.forEach((group, index) => {
+                const questionText = group.querySelector('input[name="question_text"]').value;
+                const correctAnswer = group.querySelector('input[name^="correct_answer"]:checked').value;
+                const options = {};
+                
+                ['A', 'B', 'C', 'D'].forEach(option => {
+                    const optionInput = group.querySelector(`input[name="option_${option}"]`);
+                    if (optionInput) {
+                        options[option] = optionInput.value;
+                    }
+                });
+                
+                questions.push({
+                    id: `q${index + 1}`,
+                    text: questionText,
+                    options: options,
+                    correct_answer: correctAnswer
+                });
+            });
+            
+            const examData = {
+                title: formData.get('title'),
+                description: formData.get('description'),
+                duration_minutes: parseInt(formData.get('duration_minutes')),
+                questions: questions
+            };
+
+            fetch('/admin/exams/edit/{{ exam_id }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(examData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                const alert = document.getElementById('alert');
+                if (data.success) {
+                    alert.className = 'alert alert-success';
+                    alert.textContent = data.message;
+                    alert.style.display = 'block';
+                    
+                    // Redirect after 2 seconds
+                    setTimeout(() => {
+                        window.location.href = '/admin';
+                    }, 2000);
+                } else {
+                    alert.className = 'alert alert-error';
+                    alert.textContent = 'Error: ' + data.error;
+                    alert.style.display = 'block';
+                }
+            })
+            .catch(error => {
+                const alert = document.getElementById('alert');
+                alert.className = 'alert alert-error';
+                alert.textContent = 'Error: ' + error.message;
+                alert.style.display = 'block';
+            });
+        });
+    </script>
+</body>
+</html>

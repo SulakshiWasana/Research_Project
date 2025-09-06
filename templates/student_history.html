@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Student History - Behavior Monitoring</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f8f9fa;
+            color: #333;
+            line-height: 1.6
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, .1)
+        }
+
+        .header h1 {
+            font-weight: 600;
+            font-size: 24px
+        }
+
+        .back-btn,
+        .logout-btn {
+            background: rgba(255, 255, 255, .2);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, .3);
+            padding: 8px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            cursor: pointer;
+            margin-left: 10px
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px
+        }
+
+        .history-panel {
+            background: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, .05)
+        }
+
+        .history-panel h2 {
+            margin-bottom: 20px;
+            color: #495057;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px
+        }
+
+        .student-info {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px
+        }
+
+        .student-info h3 {
+            color: #495057;
+            margin-bottom: 10px
+        }
+
+        .behavior-counts {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 20px
+        }
+
+        @media (min-width:768px) {
+            .behavior-counts {
+                grid-template-columns: repeat(6, 1fr)
+            }
+        }
+
+        .behavior-count {
+            background: #e9ecef;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center
+        }
+
+        .behavior-count h4 {
+            font-size: 12px;
+            color: #495057;
+            margin: 0 0 5px
+        }
+
+        .behavior-count .count {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea
+        }
+
+        .alert-history {
+            margin-top: 20px
+        }
+
+        .alert-history h3 {
+            color: #495057;
+            margin-bottom: 15px
+        }
+
+        .alert-item {
+            padding: 12px;
+            border-left: 4px solid #ffc107;
+            background: #f8f9fa;
+            margin-bottom: 10px;
+            border-radius: 4px
+        }
+
+        .alert-item.looking_away {
+            border-left-color: #dc3545
+        }
+
+        .alert-item.multiple_people {
+            border-left-color: #fd7e14
+        }
+
+        .alert-item.no_face {
+            border-left-color: #6f42c1
+        }
+
+        .alert-item.blur_screen {
+            border-left-color: #20c997
+        }
+
+        .alert-item.tab_switching {
+            border-left-color: #e83e8c
+        }
+
+        .alert-time {
+            font-size: 12px;
+            color: #6c757d;
+            margin-bottom: 5px
+        }
+
+        .alert-message {
+            font-size: 14px
+        }
+
+        .no-data {
+            text-align: center;
+            color: #6c757d;
+            padding: 40px;
+            background: #f8f9fa;
+            border-radius: 8px
+        }
+
+        .alert-type-badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-right: 10px;
+            background: #6c757d;
+            color: #fff
+        }
+
+        .alert-type-looking_away {
+            background: #dc3545
+        }
+
+        .alert-type-multiple_people {
+            background: #fd7e14
+        }
+
+        .alert-type-no_face {
+            background: #6f42c1
+        }
+
+        .alert-type-blur_screen {
+            background: #20c997
+        }
+
+        .alert-type-tab_switching {
+            background: #e83e8c
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <h1>Student History - Behavior Monitoring</h1>
+        <div>
+            <a href="/admin" class="back-btn">Back to Admin</a>
+            <a href="/logout" class="logout-btn">Logout</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="history-panel">
+            <h2>Student Behavior History</h2>
+
+            {% if error %}
+            <div class="no-data">
+                <p>{{ error }}</p>
+            </div>
+            {% else %}
+            <div class="student-info">
+                <h3>{{ user.name }} ({{ user.username }})</h3>
+                <p>Username: {{ user.username }}</p>
+
+                <div class="behavior-counts">
+                    <div class="behavior-count">
+                        <h4>Looking Away</h4>
+                        <div class="count">{{ history.looking_away }}</div>
+                    </div>
+                    <div class="behavior-count">
+                        <h4>Multiple People</h4>
+                        <div class="count">{{ history.multiple_people }}</div>
+                    </div>
+                    <div class="behavior-count">
+                        <h4>No Face / Sleeping</h4>
+                        <div class="count">{{ history.no_face }}</div>
+                    </div>
+                    <div class="behavior-count">
+                        <h4>Screen Blur</h4>
+                        <div class="count">{{ history.blur_screen }}</div>
+                    </div>
+                    <div class="behavior-count">
+                        <h4>Tab Switching</h4>
+                        <div class="count">{{ history.tab_switching }}</div>
+                    </div>
+                    <div class="behavior-count">
+                        <h4>Total Alerts</h4>
+                        <div class="count">{{ history.looking_away + history.multiple_people + history.no_face +
+                            history.blur_screen + history.tab_switching }}</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="alert-history">
+                <h3>Alert History</h3>
+                {% if history.alert_history %}
+                {% for alert in history.alert_history|reverse %}
+                <div class="alert-item {{ alert.type }}">
+                    <div class="alert-time">
+                        <span class="alert-type-badge alert-type-{{ alert.type }}">{{ alert.type|replace('_',' ')|title
+                            }}</span>
+                        {{ alert.timestamp[:16].replace('T',' ') }}
+                    </div>
+                    <div class="alert-message">{{ alert.message }}</div>
+                </div>
+                {% endfor %}
+                {% else %}
+                <div class="no-data">
+                    <p>No alerts recorded for this student yet.</p>
+                </div>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Available Exams - Student Dashboard</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .exam-card {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-left: 4px solid #667eea;
+            transition: transform 0.2s;
+        }
+
+        .exam-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .exam-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .exam-description {
+            color: #666;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .exam-meta {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            background: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        .exam-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-primary {
+            background: #007bff;
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .no-exams {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+
+        .no-exams-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📚 Available Exams</h1>
+            <p>Select an exam to begin your monitored assessment</p>
+        </div>
+
+        <div class="content">
+            <a href="/dashboard" class="back-link">← Back to Dashboard</a>
+
+            {% if sessions %}
+            {% for session in sessions %}
+            <div class="exam-card">
+                <div class="exam-title">{{ session.exam.title }}</div>
+                <div class="exam-description">{{ session.exam.description }}</div>
+
+                <div class="exam-meta">
+                    <div class="meta-item">
+                        ⏱️ Duration: {{ session.exam.duration_minutes }} minutes
+                    </div>
+                    <div class="meta-item">
+                        📝 Questions: {{ session.exam.questions|length }}
+                    </div>
+                    <div class="meta-item">
+                        🚀 Started: {{ session.started_at[:16].replace('T', ' ') }}
+                    </div>
+                </div>
+
+                <div class="exam-actions">
+                    <a href="/student/start_exam/{{ session.session_id }}" class="btn btn-success">🚀 Start Exam</a>
+                    <button onclick="viewExamDetails('{{ session.session_id }}')" class="btn btn-primary">ℹ️ Quick
+                        Info</button>
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <div class="no-exams">
+                <div class="no-exams-icon">📭</div>
+                <h2>No Active Exams</h2>
+                <p>There are currently no active exams available. Please check back later or contact your instructor.
+                </p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+        function viewExamDetails(sessionId) {
+            // Quick info modal or alert
+            alert('Exam session: ' + sessionId + '\n\nClick "Start Exam" to begin your monitored assessment.');
+        }
+    </script>
+</body>
+
+</html>
