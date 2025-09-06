@@ -10,8 +10,9 @@
     ],
     "student_answers": {
       "student1": {
-        "q1": "A",
-        "q2": "C"
+        "q1": "B",
+        "q2": "C",
+        "null": "C"
       },
       "Sulakshi": {},
       "lakith": {}
@@ -913,6 +914,66 @@
         {
           "type": "no_face",
           "timestamp": "2025-09-06T20:27:10.965982"
+        },
+        {
+          "type": "tab_switching",
+          "timestamp": "2025-09-06T20:33:26.126381"
+        },
+        {
+          "type": "tab_switching",
+          "timestamp": "2025-09-06T20:33:29.153922"
+        },
+        {
+          "type": "looking_away",
+          "timestamp": "2025-09-06T20:33:36.569524"
+        },
+        {
+          "type": "no_face",
+          "timestamp": "2025-09-06T20:33:42.461142"
+        },
+        {
+          "type": "looking_away",
+          "timestamp": "2025-09-07T00:08:58.564803"
+        },
+        {
+          "type": "no_face",
+          "timestamp": "2025-09-07T00:09:04.315317"
+        },
+        {
+          "type": "tab_switching",
+          "timestamp": "2025-09-07T00:09:25.934145"
+        },
+        {
+          "type": "no_face",
+          "timestamp": "2025-09-07T00:10:43.865900"
+        },
+        {
+          "type": "looking_away",
+          "timestamp": "2025-09-07T00:10:45.929375"
+        },
+        {
+          "type": "looking_away",
+          "timestamp": "2025-09-07T00:10:49.903169"
+        },
+        {
+          "type": "no_face",
+          "timestamp": "2025-09-07T00:10:55.884436"
+        },
+        {
+          "type": "looking_away",
+          "timestamp": "2025-09-07T00:11:05.949142"
+        },
+        {
+          "type": "no_face",
+          "timestamp": "2025-09-07T00:11:11.870250"
+        },
+        {
+          "type": "looking_away",
+          "timestamp": "2025-09-07T00:11:52.017839"
+        },
+        {
+          "type": "no_face",
+          "timestamp": "2025-09-07T00:11:57.884386"
         }
       ],
       "Sulakshi": [

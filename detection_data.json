@@ -24,11 +24,11 @@
     ]
   },
   "student1": {
-    "looking_away": 20,
+    "looking_away": 36,
     "multiple_people": 0,
-    "no_face": 114,
+    "no_face": 248,
     "blur_screen": 0,
-    "tab_switching": 15,
+    "tab_switching": 29,
     "alert_history": [
       {
         "timestamp": "2025-09-06T17:18:31.673351",
@@ -142,6 +142,91 @@
       },
       {
         "timestamp": "2025-09-06T20:27:12.144157",
+        "type": "tab_switching",
+        "message": "Tab switching detected!"
+      },
+      {
+        "timestamp": "2025-09-06T20:33:26.096815",
+        "type": "tab_switching",
+        "message": "Tab switching detected!"
+      },
+      {
+        "timestamp": "2025-09-06T20:33:29.130050",
+        "type": "tab_switching",
+        "message": "Tab switching detected!"
+      },
+      {
+        "timestamp": "2025-09-06T20:33:36.549351",
+        "type": "looking_away",
+        "message": "Looking away from screen detected!"
+      },
+      {
+        "timestamp": "2025-09-06T20:33:42.437351",
+        "type": "no_face",
+        "message": "No face detected!"
+      },
+      {
+        "timestamp": "2025-09-06T20:33:45.558910",
+        "type": "tab_switching",
+        "message": "Tab switching detected!"
+      },
+      {
+        "timestamp": "2025-09-07T00:08:58.549837",
+        "type": "looking_away",
+        "message": "Looking away from screen detected!"
+      },
+      {
+        "timestamp": "2025-09-07T00:09:04.302999",
+        "type": "no_face",
+        "message": "No face detected!"
+      },
+      {
+        "timestamp": "2025-09-07T00:09:25.920714",
+        "type": "tab_switching",
+        "message": "Tab switching detected!"
+      },
+      {
+        "timestamp": "2025-09-07T00:10:43.849193",
+        "type": "no_face",
+        "message": "No face detected!"
+      },
+      {
+        "timestamp": "2025-09-07T00:10:45.913776",
+        "type": "looking_away",
+        "message": "Looking away from screen detected!"
+      },
+      {
+        "timestamp": "2025-09-07T00:10:49.893742",
+        "type": "looking_away",
+        "message": "Looking away from screen detected!"
+      },
+      {
+        "timestamp": "2025-09-07T00:10:55.864875",
+        "type": "no_face",
+        "message": "No face detected!"
+      },
+      {
+        "timestamp": "2025-09-07T00:11:05.934165",
+        "type": "looking_away",
+        "message": "Looking away from screen detected!"
+      },
+      {
+        "timestamp": "2025-09-07T00:11:11.853855",
+        "type": "no_face",
+        "message": "No face detected!"
+      },
+      {
+        "timestamp": "2025-09-07T00:11:52.003679",
+        "type": "looking_away",
+        "message": "Looking away from screen detected!"
+      },
+      {
+        "timestamp": "2025-09-07T00:11:57.863885",
+        "type": "no_face",
+        "message": "No face detected!"
+      },
+      {
+        "timestamp": "2025-09-07T00:12:21.977916",
         "type": "tab_switching",
         "message": "Tab switching detected!"
       }

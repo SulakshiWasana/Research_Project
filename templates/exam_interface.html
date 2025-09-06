@@ -164,6 +164,9 @@
             padding: 15px;
             cursor: pointer;
             transition: all 0.2s;
+            position: relative;
+            z-index: 1;
+            user-select: none;
         }
 
         .option:hover {
@@ -400,6 +403,9 @@
                     <button id="nextBtn" class="btn btn-primary" onclick="nextQuestion()">Next →</button>
                     <button id="submitBtn" class="btn btn-success" onclick="submitExam()" style="display: none;">Submit
                         Exam</button>
+                    <!-- <button
+                        onclick="console.log('Current answers:', answers); console.log('Current question ID:', exam.questions[currentQuestion].id);"
+                        style="background: #ffc107; color: #000; padding: 5px 10px; border: none; border-radius: 3px; margin-left: 10px;">Debug</button> -->
                 </div>
             </div>
         </div>
@@ -459,23 +465,44 @@
                 <div class="options">
                     ${Object.entries(question.options).map(([key, value]) => `
                         <div class="option ${answers[question.id] === key ? 'selected' : ''}" 
-                             onclick="selectAnswer(${question.id}, '${key}')">
+                             data-question-id="${question.id}" 
+                             data-answer="${key}">
                             <span class="option-label">${key}.</span>${value}
                         </div>
                     `).join('')}
                 </div>
             `;
 
+                // Add event listeners to options
+                container.querySelectorAll('.option').forEach(option => {
+                    option.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        console.log('Option clicked:', this);
+                        const questionId = this.dataset.questionId; // Keep as string to match exam data
+                        const answer = this.dataset.answer;
+                        console.log('Question ID:', questionId, 'Answer:', answer);
+                        selectAnswer(questionId, answer, this);
+                    });
+                });
+
                 updateNavigation();
                 updateProgress();
             }
 
-            function selectAnswer(questionId, answer) {
+            function selectAnswer(questionId, answer, element) {
+                console.log('selectAnswer called:', questionId, answer, element);
+
+                // Store the answer
                 answers[questionId] = answer;
+                console.log('Answer stored:', answers);
 
                 // Update UI
                 document.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
-                event.target.classList.add('selected');
+                element.classList.add('selected');
+
+                // Update navigation to enable next button
+                updateNavigation();
 
                 // Save answer
                 fetch('/student/submit_answer', {
@@ -486,6 +513,10 @@
                         question_id: questionId,
                         answer: answer
                     })
+                }).then(response => {
+                    console.log('Answer saved:', response);
+                }).catch(error => {
+                    console.error('Error saving answer:', error);
                 });
             }
 
@@ -497,6 +528,13 @@
             }
 
             function nextQuestion() {
+                // Check if current question has been answered
+                const currentQuestionData = exam.questions[currentQuestion];
+                if (!answers[currentQuestionData.id]) {
+                    alert('Please select an answer before proceeding to the next question.');
+                    return;
+                }
+
                 if (currentQuestion < exam.questions.length - 1) {
                     currentQuestion++;
                     loadQuestion(currentQuestion);
@@ -504,10 +542,36 @@
             }
 
             function updateNavigation() {
+                const currentQuestionData = exam.questions[currentQuestion];
+                const isAnswered = answers[currentQuestionData.id];
+
+                console.log('updateNavigation - questionId:', currentQuestionData.id);
+                console.log('updateNavigation - isAnswered:', isAnswered);
+                console.log('updateNavigation - answers:', answers);
+
                 document.getElementById('prevBtn').disabled = currentQuestion === 0;
                 document.getElementById('nextBtn').style.display = currentQuestion === exam.questions.length - 1 ? 'none' : 'block';
                 document.getElementById('submitBtn').style.display = currentQuestion === exam.questions.length - 1 ? 'block' : 'none';
-                document.getElementById('questionProgress').textContent = `Question ${currentQuestion + 1} of ${exam.questions.length}`;
+
+                // Update question progress with answer status
+                const statusIcon = isAnswered ? '✅' : '❌';
+                document.getElementById('questionProgress').textContent = `${statusIcon} Question ${currentQuestion + 1} of ${exam.questions.length}`;
+
+                // Enable/disable next button based on answer status
+                if (currentQuestion < exam.questions.length - 1) {
+                    const nextBtn = document.getElementById('nextBtn');
+                    if (isAnswered) {
+                        nextBtn.disabled = false;
+                        nextBtn.style.opacity = '1';
+                        nextBtn.style.cursor = 'pointer';
+                        console.log('Next button ENABLED');
+                    } else {
+                        nextBtn.disabled = true;
+                        nextBtn.style.opacity = '0.5';
+                        nextBtn.style.cursor = 'not-allowed';
+                        console.log('Next button DISABLED');
+                    }
+                }
             }
 
             function updateProgress() {
@@ -638,6 +702,21 @@
             }
 
             function submitExam() {
+                // Check if all questions have been answered
+                const unansweredQuestions = [];
+                exam.questions.forEach((question, index) => {
+                    if (!answers[question.id]) {
+                        unansweredQuestions.push(index + 1);
+                    }
+                });
+
+                if (unansweredQuestions.length > 0) {
+                    const confirmSubmit = confirm(`You have ${unansweredQuestions.length} unanswered question(s): ${unansweredQuestions.join(', ')}. Are you sure you want to submit the exam?`);
+                    if (!confirmSubmit) {
+                        return;
+                    }
+                }
+
                 clearInterval(timerInterval);
                 clearInterval(monitoringInterval);
 
