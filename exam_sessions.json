@@ -5,14 +5,16 @@
     "status": "active",
     "students": [
       "student1",
-      "Sulakshi"
+      "Sulakshi",
+      "lakith"
     ],
     "student_answers": {
       "student1": {
         "q1": "A",
         "q2": "C"
       },
-      "Sulakshi": {}
+      "Sulakshi": {},
+      "lakith": {}
     },
     "student_detections": {
       "student1": [
@@ -875,6 +877,10 @@
         {
           "type": "looking_away",
           "timestamp": "2025-09-06T17:37:42.902360"
+        },
+        {
+          "type": "looking_away",
+          "timestamp": "2025-09-06T19:27:04.624102"
         }
       ],
       "Sulakshi": [
@@ -885,6 +891,28 @@
         {
           "type": "no_face",
           "timestamp": "2025-09-06T16:32:14.666472"
+        }
+      ],
+      "lakith": [
+        {
+          "type": "no_face",
+          "timestamp": "2025-09-06T19:39:07.034430"
+        },
+        {
+          "type": "looking_away",
+          "timestamp": "2025-09-06T19:39:26.590697"
+        },
+        {
+          "type": "no_face",
+          "timestamp": "2025-09-06T19:39:32.544763"
+        },
+        {
+          "type": "multiple_people",
+          "timestamp": "2025-09-06T19:39:55.077773"
+        },
+        {
+          "type": "looking_away",
+          "timestamp": "2025-09-06T19:39:57.174839"
         }
       ]
     }

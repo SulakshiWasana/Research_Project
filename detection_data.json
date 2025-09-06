@@ -24,11 +24,11 @@
     ]
   },
   "student1": {
-    "looking_away": 9,
+    "looking_away": 10,
     "multiple_people": 0,
     "no_face": 1,
     "blur_screen": 0,
-    "tab_switching": 3,
+    "tab_switching": 4,
     "alert_history": [
       {
         "timestamp": "2025-09-06T17:18:31.673351",
@@ -82,6 +82,65 @@
       },
       {
         "timestamp": "2025-09-06T17:38:01.896222",
+        "type": "tab_switching",
+        "message": "Tab switching detected!"
+      },
+      {
+        "timestamp": "2025-09-06T19:27:04.600520",
+        "type": "looking_away",
+        "message": "Looking away from screen detected!"
+      },
+      {
+        "timestamp": "2025-09-06T19:27:05.494883",
+        "type": "tab_switching",
+        "message": "Tab switching detected!"
+      }
+    ]
+  },
+  "lakith": {
+    "looking_away": 5,
+    "multiple_people": 1,
+    "no_face": 6,
+    "blur_screen": 0,
+    "tab_switching": 3,
+    "alert_history": [
+      {
+        "timestamp": "2025-09-06T19:39:07.010476",
+        "type": "no_face",
+        "message": "No face detected!"
+      },
+      {
+        "timestamp": "2025-09-06T19:39:11.544998",
+        "type": "tab_switching",
+        "message": "Tab switching detected!"
+      },
+      {
+        "timestamp": "2025-09-06T19:39:26.570403",
+        "type": "looking_away",
+        "message": "Looking away from screen detected!"
+      },
+      {
+        "timestamp": "2025-09-06T19:39:32.525923",
+        "type": "no_face",
+        "message": "No face detected!"
+      },
+      {
+        "timestamp": "2025-09-06T19:39:34.770825",
+        "type": "tab_switching",
+        "message": "Tab switching detected!"
+      },
+      {
+        "timestamp": "2025-09-06T19:39:55.058719",
+        "type": "multiple_people",
+        "message": "Multiple people detected!"
+      },
+      {
+        "timestamp": "2025-09-06T19:39:57.162420",
+        "type": "looking_away",
+        "message": "Looking away from screen detected!"
+      },
+      {
+        "timestamp": "2025-09-06T19:40:01.128766",
         "type": "tab_switching",
         "message": "Tab switching detected!"
       }
